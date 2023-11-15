@@ -4,51 +4,63 @@ function moduleProject1() {
   footer.textContent = `© BLOOM INSTITUTE OF TECHNOLOGY ${currentYear}`
 
   // 👇 WORK WORK BELOW THIS LINE 👇
-  const widgetSection = document.querySelector('section')
+  const sectionWidgets = document.querySelector('section')
   const random = data => data[Math.floor(Math.random() * data.length)]
 
   // 👉 TASK 1 - Add a "widget" class name to widgets so CSS kicks in
-  const widgetDivs = widgetSection.querySelectorAll('div')
-  widgetDivs.forEach(widgets => widgets.classList.add('widget'))
+  const divsWidgets = sectionWidgets.querySelectorAll('div')
+  divsWidgets.forEach(widgets => widgets.classList.add('widget'))
 
   // 👉 TASK 2 - Build a "Quote of the Day" widget
-  //  ✨ add your code here
   const quoteData = random(quotes);
-  const quoteContainer = widgetSection.querySelector('.quoteoftheday')
-  const quoteDiv = document.createElement('div')
-  quoteDiv.textContent = quoteData.quote
-  quoteContainer.appendChild(quoteDiv)
-  const authorDiv = document.createElement('div')
-  authorDiv.textContent = `${quoteData.author} in ${quoteData.date ? quoteData.date : 'an unknown date'}`
-  quoteContainer.appendChild(authorDiv)
+  const divQuoteOfTheDay = sectionWidgets.querySelector('.quoteoftheday')
+  const divQuoteText = document.createElement('div')
+  divQuoteText.textContent = quoteData.quote
+  divQuoteOfTheDay.appendChild(divQuoteText)
+  const divAuthorInfo = document.createElement('div')
+  divAuthorInfo.textContent = `${quoteData.author} in ${quoteData.date ? quoteData.date : 'an unknown date'}`
+  divQuoteOfTheDay.appendChild(divAuthorInfo)
 
   // 👉 TASK 3 - Build a "Corporate Speak" widget
-  const randomCorporateSpeak = () => `We need to ${random(verbs)} our ${random(nouns)} ${random(adverbs)} in order to ${random(verbs)} our ${random(nouns)} ${random(adverbs)}.`
-  const corpSpeak = document.createElement('p')
-  corpSpeak.textContent = randomCorporateSpeak()
-  widgetSection.querySelector('.corporatespeak').appendChild(corpSpeak)
+  const getStringCorporateSpeak = () => `We need to ${random(verbs)} our ${random(nouns)} ${random(adverbs)} in order to ${random(verbs)} our ${random(nouns)} ${random(adverbs)}.`
+  const elementCorporateSpeak = document.createElement('p')
+  elementCorporateSpeak.textContent = getStringCorporateSpeak()
+  sectionWidgets.querySelector('.corporatespeak').appendChild(elementCorporateSpeak)
 
   // 👉 TASK 4 - Build a "Countdown" widget
-  const countdownEl = document.createElement('p')
-  widgetSection.querySelector('.countdown').appendChild(countdownEl)
-
-  let count = 5
+  const elementCountdown = document.createElement('p')
+  sectionWidgets.querySelector('.countdown').appendChild(elementCountdown)
   const countdown = count => {
-    countdownEl.textContent = count ? `T-minus ${count}...` : 'Liftoff! 🚀'
+    elementCountdown.textContent = count ? `T-minus ${count}...` : 'Liftoff! 🚀'
     count--
     if (count >= 0) {
-      setTimeout(() => {
-        countdown(count)
-      }, 1000)
+      setTimeout(() => countdown(count), 1000)
     }
   }
-  countdown(count)
+  countdown(5)
 
   // 👉 TASK 5 - Build a "Friends" widget
-  //  ✨ add your code here
+  const elementFriends = document.createElement('p')
+  const person = random(people)
+  const getFriendBy = id => people.find(person => person.id === id)
+  const getFriendsFor = person => person.friends.map(id => getStringNameFor(getFriendBy(id)))
+  const getStringNameFor = person => `${person.fname} ${person.lname}`
+  const getStringDOBfor = person => person.dateOfBirth.slice(0, 4)
+  const getStringNoFriends = () => 'has no friends.'
+  const getStringOneOrMore = friends => {
+    const last = friends.pop();
+    const commaSeparatedNames = `${friends.join(', ')}`
+    return `is friends with ${!friends.length ? last : commaSeparatedNames + ' and ' + last}.`
+  }
+  const getStringFriendsFor = person => {
+    const friends = getFriendsFor(person)
+    return !friends.length ? getStringNoFriends() : getStringOneOrMore(friends)
+  }
+  elementFriends.textContent = `${getStringNameFor(person)} was born in ${getStringDOBfor(person)} and ${getStringFriendsFor(person)}`
+  sectionWidgets.querySelector('.friends').appendChild(elementFriends)
 
   // 👉 TASK 6 - Make it so user can tab through the widgets
-  //  ✨ add your code here
+  divsWidgets.forEach((div, index) => div.setAttribute('tabIndex', index + 1))
 
   // 👆 WORK WORK ABOVE THIS LINE 👆
 }
