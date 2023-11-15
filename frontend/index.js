@@ -12,13 +12,13 @@ function moduleProject1() {
   divsWidgets.forEach(widgets => widgets.classList.add('widget'))
 
   // 👉 TASK 2 - Build a "Quote of the Day" widget
-  const quoteData = random(quotes);
+  const { quote, author, date } = random(quotes);
   const divQuoteOfTheDay = sectionWidgets.querySelector('.quoteoftheday')
   const divQuoteText = document.createElement('div')
-  divQuoteText.textContent = quoteData.quote
+  divQuoteText.textContent = quote
   divQuoteOfTheDay.appendChild(divQuoteText)
   const divAuthorInfo = document.createElement('div')
-  divAuthorInfo.textContent = `${quoteData.author} in ${quoteData.date ? quoteData.date : 'an unknown date'}`
+  divAuthorInfo.textContent = `${author} in ${date ? date : 'an unknown date'}`
   divQuoteOfTheDay.appendChild(divAuthorInfo)
 
   // 👉 TASK 3 - Build a "Corporate Speak" widget
